@@ -94,18 +94,18 @@ const UserDashboard = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-      <IconButton 
-      color="primary" 
-      size="large"
-      onClick={handleProfile}
-      sx={{ 
-        '&:hover': { 
-          backgroundColor: 'rgba(25, 118, 210, 0.04)'
-        }
-      }}
-    >
-      <AccountCircleIcon fontSize="large" />
-    </IconButton>
+        <IconButton 
+          color="primary" 
+          size="large"
+          onClick={handleProfile}
+          sx={{ 
+            '&:hover': { 
+              backgroundColor: 'rgba(25, 118, 210, 0.04)'
+            }
+          }}
+        >
+          <AccountCircleIcon fontSize="large" />
+        </IconButton>
         <Typography variant="h4" component="h1" fontWeight="bold">
           My Documents
         </Typography>
@@ -117,7 +117,7 @@ const UserDashboard = () => {
           Add Verification Request
         </Button>
       </Box>
-
+  
       <Paper elevation={3}>
         {loading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
@@ -134,24 +134,17 @@ const UserDashboard = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Document ID</TableCell>
-                  <TableCell>Type</TableCell>
                   <TableCell>Issuer</TableCell>
                   <TableCell>Status</TableCell>
-                  <TableCell>Date</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {requests.map((request) => (
+                {requests.map((request, index) => (
                   <TableRow 
-                    key={request.id}
+                    key={request.documentId || `request-${index}`}
                     hover
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell component="th" scope="row">
-                      {request.documentId}
-                    </TableCell>
-                    <TableCell>{request.documentType}</TableCell>
                     <TableCell>{request.issuerName}</TableCell>
                     <TableCell>
                       <Chip 
@@ -159,13 +152,6 @@ const UserDashboard = () => {
                         size="small"
                         {...getStatusChipProps(request.status)}
                       />
-                    </TableCell>
-                    <TableCell>
-                      {new Date(request.timestamp).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}
                     </TableCell>
                   </TableRow>
                 ))}
