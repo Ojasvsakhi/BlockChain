@@ -531,13 +531,14 @@ export async function getUserList() {
         
         for (let i = 0; i < length; i++) {
             const res = await contract.showUserVerificationReqList(i);
-            const ver = await getVerifierName(res[0].toLowerCase());
+            const ver = await getVerifierName(res[0]);
+        
             userList.push({ 
               verifier: ver, 
               status: Number(res[1]) // Convert BigInt to a regular number
             });
         }
-        //console.log(userList);
+  
         return userList;
     } catch (error) {
         console.error("Error fetching user list:", error);
@@ -547,21 +548,10 @@ export async function getUserList() {
 /** ✅ Fetch list of verifier verification requests */
 export async function getVerifierList() {
     try {
-         //const contract = await createEthereumContract();
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider)
+        const contract = await createEthereumContract();
+      
         const length = await contract.showVerifierVerificationReqListLength();
         console.log(length);
-        // let verifierList = [];
-        // for (let i = 0; i < length; i++) {
-        //     const res = await contract.showVerifierVerificationReqList(i);
-        //     verifierList.push({
-        //         cid: res.cid,
-        //         metaIndex: res.metaIndex.toNumber(),
-        //         status: res.status.toNumber(),
-        //         user: res.user,
-        //     });
-        // }
         const userList = [];
         let i = 0;
         while(i<length){
@@ -569,21 +559,21 @@ export async function getVerifierList() {
           let res = await contract.showVerifierVerificationReqList(i);
           obj.cid = res.cid;
           obj.id = res.id;
-          obj.metaIndex = res.metaIndex.toNumber();
-          obj.status = res.status.toNumber();
+          obj.metaIndex = Number(res.metaIndex);
+          obj.status = Number(res.status);
           obj.user = res.user;
 
           res = await contract.showVerifierVerificationReqScopeList(i);
           obj.sex = res.sex;
           obj.name = res.name;
           obj.dob = res.dob;
-          obj.mobile = res.mobile?.toNumber();
+          obj.mobile = Number(res.mobile);
           obj.email = res.email;
           obj.college = res.college;
 
           res = await contract.showVerifierVerificationReqScopeBoolsList(i);
-          obj.isOver18 = res.isOver18?.toNumber();
-          obj.isCollegeStudent = res.isCollegeStudent?.toNumber();
+          obj.isOver18 = Number(res.isOver18);
+          obj.isCollegeStudent = Number(res.isCollegeStudent);
           
           userList.push(obj)
           i++;
@@ -629,12 +619,6 @@ export async function submitDoc(verifier, cid, id, name, sex, dob, mobile, email
       
       await tx.wait();
       console.log("Transaction confirmed:", tx.hash);
-
-
-      const length = await contract.showUserVerificationReqListLength();
-      console.log(length);
-      const length2 = await contract.showVerifierVerificationReqListLength();
-      console.log(length2);
 
       return tx.hash;
   } catch (error) {

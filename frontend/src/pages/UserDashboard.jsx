@@ -63,7 +63,6 @@ const UserDashboard = () => {
     }
   };
   useEffect(() => {
-    console.log("Updated Requests:", requests);
 }, [requests]); // Runs whenever `requests` updates
 
   const handleAddDocument = () => {
@@ -147,8 +146,7 @@ const UserDashboard = () => {
       <Paper elevation={3} sx={{ minHeight: "200px" }}>
         {" "}
         {/* Added minHeight for visibility */}
-        {console.log("Debug - loading:", loading)}
-        {console.log("Debug - requests:", requests)}
+  
         {loading ? (
           <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
             <CircularProgress />
@@ -171,7 +169,7 @@ const UserDashboard = () => {
               <TableBody>
                 {Array.isArray(requests) &&
                   requests.map((request, index) => {
-                    console.log("Debug - Rendering row:", request);
+          
                     return (
                       <TableRow
                         key={`request-${index}`}
