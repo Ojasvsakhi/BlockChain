@@ -74,9 +74,9 @@ const IssuerDashboard = () => {
 
   const getStatusChipProps = (status) => {
     switch (status) {
-      case 'Approved':
+      case 0:
         return { color: 'success', variant: 'filled' };
-      case 'Rejected':
+      case 1:
         return { color: 'error', variant: 'filled' };
       default:
         return { color: 'warning', variant: 'filled' };

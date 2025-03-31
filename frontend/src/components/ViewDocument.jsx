@@ -19,7 +19,18 @@ const ViewDocument = ({
   onUpdateStatus 
 }) => {
   const getBooleanText = (value) => value === 1 ? 'Yes' : 'No';
-
+  const getStatusText = (status) => {
+    switch (Number(status)) {
+      case 1:
+        return "Approved";
+      case 0:
+        return "Pending";
+      case -1:
+        return "Rejected";
+      default:
+        return "Unknown";
+    }
+  };
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ fontWeight: "bold" }}>Document Details</DialogTitle>
@@ -65,10 +76,10 @@ const ViewDocument = ({
         )}
       </DialogContent>
       <DialogActions sx={{ p: 2, gap: 1 }}>
-        {selectedRequest?.status === "Pending" && (
+        {Number(selectedRequest?.status) === 0 && (
           <>
             <Button
-              onClick={() => onUpdateStatus(selectedRequest.id, "Rejected")}
+              onClick={() => onUpdateStatus(selectedRequest.id, -1)}
               color="error"
               variant="contained"
               startIcon={<CloseIcon />}
@@ -76,7 +87,7 @@ const ViewDocument = ({
               Reject
             </Button>
             <Button
-              onClick={() => onUpdateStatus(selectedRequest.id, "Approved")}
+              onClick={() => onUpdateStatus(selectedRequest.id, 1)}
               color="success"
               variant="contained"
               startIcon={<CheckIcon />}
