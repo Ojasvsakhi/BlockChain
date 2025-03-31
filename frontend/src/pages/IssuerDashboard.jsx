@@ -71,14 +71,25 @@ const IssuerDashboard = () => {
       setLoading(false);
     }
   };
-
+  const getStatusText = (status) => {
+    switch (Number(status)) {
+      case 1:
+        return "Approved";
+      case 0:
+        return "Pending";
+      case -1:
+        return "Rejected";
+      default:
+        return "Unknown";
+    }
+  }
   const getStatusChipProps = (status) => {
     switch (status) {
-      case 0:
-        return { color: 'success', variant: 'filled' };
       case 1:
+        return { color: 'success', variant: 'filled' };
+      case -1:
         return { color: 'error', variant: 'filled' };
-      default:
+      case 0:
         return { color: 'warning', variant: 'filled' };
     }
   };
@@ -119,7 +130,7 @@ const IssuerDashboard = () => {
                     <TableCell>{request.metaIndex}</TableCell>
                     <TableCell>
                       <Chip 
-                        label={request.status}
+                        label={getStatusText(request.status)}
                         size="small"
                         {...getStatusChipProps(request.status)}
                       />
