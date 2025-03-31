@@ -32,6 +32,7 @@ const AddDocumentDialog = ({ open, onClose, onSubmit }) => {
     setSelectedField("");
   };
   const availableFields = [
+    { label: "Name", type: "text" },
     { label: "Gender", type: "select", options: ["Male", "Female", "Other"] },
     { label: "Date of Birth", type: "date" },
     { label: "Mobile Number", type: "number" },

@@ -44,6 +44,20 @@ const UserDashboard = () => {
   ];
   useEffect(() => {
     fetchRequests();
+    window.onbeforeunload = (e) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    // Add popstate event listener
+    window.history.pushState(null, null, window.location.pathname);
+    window.addEventListener('popstate', handleBackButton);
+
+    // Cleanup function
+    return () => {
+      window.onbeforeunload = null;
+      window.removeEventListener('popstate', handleBackButton);
+    };
   }, []);
   const handleProfile = () => {
     navigate('/UserProfile');
@@ -69,6 +83,16 @@ const UserDashboard = () => {
   const handleSubmitDocument = (formData) => {
     console.log('Submitted:', formData);
     setOpenDialog(false);
+  };
+  const handleBackButton = (e) => {
+    e.preventDefault();
+    const confirmLogout = window.confirm('Are you sure you want to logout?');
+    if (confirmLogout) {
+      // Add your logout logic here
+      navigate('/login'); // or wherever you want to redirect after logout
+    } else {
+      window.history.pushState(null, null, window.location.pathname);
+    };
   };
   const getStatusChipProps = (status) => {
     switch (status) {
