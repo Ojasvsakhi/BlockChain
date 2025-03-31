@@ -15,7 +15,12 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const navigate = useNavigate();
   const [role, setRole] = useState("user");
-
+  const handleWalletConnect = (account) => {
+    localStorage.setItem("isAuthenticated", true);
+    localStorage.setItem("role", "user");
+    localStorage.setItem("walletAddress", account);
+    navigate("/UserDashboard");
+  };
   const handleLogin = () => {
     localStorage.setItem("isAuthenticated", true);
     localStorage.setItem("role", role);
@@ -139,7 +144,7 @@ function Login() {
         </Button>
 
         {/* Login with Wallet */}
-        <WalletButton />
+        <WalletButton onConnect={handleWalletConnect}/>
       </Box>
     </Container>
   );

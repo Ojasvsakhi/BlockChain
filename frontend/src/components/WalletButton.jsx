@@ -1,34 +1,39 @@
-import { useState } from "react";
-import { connectWallet, getChainId } from "../utils/wallet";
-import { Button } from "@mui/material";
+import React, { useState } from 'react';
+import { Button } from '@mui/material';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
-export default function WalletButton() {
-  const [walletAddress, setWalletAddress] = useState(null);
-  const [chainId, setChainId] = useState(null);
+const WalletButton = ({ onConnect }) => {
+  const [account, setAccount] = useState('');
 
-  const handleConnect = async () => {
-    try {
-      const signer = await connectWallet();
-      if (signer) {
-        setWalletAddress(await signer.getAddress());
-        const currentChainId = await getChainId();
-        setChainId(currentChainId);
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts'
+        });
+        setAccount(accounts[0]);
+        if (onConnect) {
+          onConnect(accounts[0]);
+        }
+      } catch (error) {
+        console.error('Error connecting wallet:', error);
       }
-    } catch (error) {
-      console.error("Failed to connect wallet", error);
+    } else {
+      alert('Please install MetaMask!');
     }
   };
 
   return (
-    <div>
-      <Button 
-        variant="contained" 
-        sx={{ backgroundColor: "#10B981", "&:hover": { backgroundColor: "#388E3C" } }} style={{marginLeft: "150px" }}
-        onClick={handleConnect}
-      >
-        {walletAddress ? walletAddress.substring(0, 6) + "..." : "Connect Wallet"}
-      </Button>
-      {chainId && <p>Chain ID: {chainId}</p>}
-    </div>
+    <Button
+      variant="contained"
+      color="primary"
+      fullWidth
+      onClick={connectWallet}
+      startIcon={<AccountBalanceWalletIcon />}
+    >
+      {account ? `Connected: ${account.substring(0, 6)}...${account.substring(38)}` : 'Connect Wallet'}
+    </Button>
   );
-}
+};
+
+export default WalletButton;
