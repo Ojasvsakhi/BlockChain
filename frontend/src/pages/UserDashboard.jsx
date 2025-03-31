@@ -208,6 +208,11 @@ const UserDashboard = () => {
           </TableContainer>
         )}
       </Paper>
+      <AddDocumentDialog 
+      open={openDialog}
+      onClose={handleCloseDialog}
+      onSubmit={handleSubmitDocument}
+    />
     </Container>
   );
 };
