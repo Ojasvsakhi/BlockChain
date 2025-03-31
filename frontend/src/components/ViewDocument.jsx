@@ -7,6 +7,7 @@ import {
   Button,
   Typography,
   Box,
+  Divider,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -17,27 +18,49 @@ const ViewDocument = ({
   selectedRequest, 
   onUpdateStatus 
 }) => {
+  const getBooleanText = (value) => value === 1 ? 'Yes' : 'No';
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ fontWeight: "bold" }}>Document Details</DialogTitle>
       <DialogContent dividers>
         {selectedRequest && (
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Typography variant="subtitle2">Document Type</Typography>
-            <Typography>{selectedRequest.documentType}</Typography>
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary">Name</Typography>
+              <Typography>{selectedRequest.name}</Typography>
+            </Box>
 
-            <Typography variant="subtitle2">Document ID</Typography>
-            <Typography>{selectedRequest.documentId}</Typography>
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary">Date of Birth</Typography>
+              <Typography>{selectedRequest.dob}</Typography>
+            </Box>
 
-            <Typography variant="subtitle2" sx={{ mt: 2 }}>
-              Additional Information
-            </Typography>
-            {selectedRequest.additionalFields.map((field, index) => (
-              <Box key={index}>
-                <Typography variant="subtitle2">{field.label}</Typography>
-                <Typography>{field.value}</Typography>
-              </Box>
-            ))}
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary">Sex</Typography>
+              <Typography>{selectedRequest.sex}</Typography>
+            </Box>
+
+            <Divider />
+
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary">Contact Information</Typography>
+              <Typography>Email: {selectedRequest.email}</Typography>
+              <Typography>Mobile: {selectedRequest.mobile}</Typography>
+            </Box>
+
+            <Divider />
+
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary">Education</Typography>
+              <Typography>College: {selectedRequest.college}</Typography>
+            </Box>
+
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary">Verification Status</Typography>
+              <Typography>Over 18: {getBooleanText(selectedRequest.isOver18)}</Typography>
+              <Typography>College Student: {getBooleanText(selectedRequest.isCollegeStudent)}</Typography>
+            </Box>
           </Box>
         )}
       </DialogContent>
