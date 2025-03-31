@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import {verifyRequest} from '../utils/wallet.js'
 
 const ViewDocument = ({ 
   open, 
@@ -31,6 +32,28 @@ const ViewDocument = ({
         return "Unknown";
     }
   };
+
+  const handleReject = async (selectedRequest,decision)=>{
+    try{
+      await verifyRequest(selectedRequest.id,selectedRequest.metaIndex,decision);
+      onUpdateStatus(selectedRequest.id, decision)
+    }catch(error){
+      console.log("Error while Rejection the Document!",error);
+    }
+    onClose();
+  }
+
+
+  const handleApprove = async (selectedRequest,decision)=>{
+    try{
+      await verifyRequest(selectedRequest.id,selectedRequest.metaIndex,decision);
+      onUpdateStatus(selectedRequest.id, decision)
+    }catch(error){
+      console.log("Error while Rejection the Document!",error);
+    }
+    onClose();
+  }
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ fontWeight: "bold" }}>Document Details</DialogTitle>
@@ -79,7 +102,8 @@ const ViewDocument = ({
         {Number(selectedRequest?.status) === 0 && (
           <>
             <Button
-              onClick={() => onUpdateStatus(selectedRequest.id, -1)}
+              //onClick={() => onUpdateStatus(selectedRequest.id, -1)}
+              onClick={()=>handleReject(selectedRequest,-1)}
               color="error"
               variant="contained"
               startIcon={<CloseIcon />}
@@ -87,7 +111,8 @@ const ViewDocument = ({
               Reject
             </Button>
             <Button
-              onClick={() => onUpdateStatus(selectedRequest.id, 1)}
+              //onClick={() => onUpdateStatus(selectedRequest.id, 1)}
+              onClick={() => handleApprove(selectedRequest.id, 1)}
               color="success"
               variant="contained"
               startIcon={<CheckIcon />}
