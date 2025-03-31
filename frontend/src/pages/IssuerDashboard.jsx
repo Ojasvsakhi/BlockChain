@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ViewDocument from '../components/ViewDocument';
+import {getVerifierList} from "../utils/wallet.js"
 
 const IssuerDashboard = () => {
   const [requests, setRequests] = useState([]);
@@ -24,48 +25,23 @@ const IssuerDashboard = () => {
   const [openDialog, setOpenDialog] = useState(false);
 
   // Mock data - replace with your blockchain data
-  const mockRequests = [
-    {
-      id: "REQ001",
-      address: "0x123...abc",
-      status: "Pending",
-      documentType: "Aadhar Card",
-      documentId: "1234-5678-9012",
-      additionalFields: [
-        { label: "Name", value: "John Doe" },
-        { label: "DOB", value: "1990-01-01" },
-        { label: "Gender", value: "Male" }
-      ]
-    },
-    {
-      id: "REQ002",
-      address: "0x456...def",
-      status: "Approved",
-      documentType: "PAN Card",
-      documentId: "ABCDE1234F",
-      additionalFields: [
-        { label: "Name", value: "Jane Smith" },
-        { label: "DOB", value: "1992-05-15" }
-      ]
-    }
-  ];
+  const mockRequests = [];
 
   useEffect(() => {
     fetchRequests();
-  }, []);
+  },[]);
 
-  const fetchRequests = async () => {
-    try {
-      setLoading(true);
-      // Replace with your blockchain data fetching
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setRequests(mockRequests);
-    } catch (error) {
-      console.error('Error fetching requests:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+   const fetchRequests = async () => {
+      try {
+        setLoading(true);
+        const verificationList = await getVerifierList();
+        setRequests((prev) => [...verificationList]);
+      } catch (error) {
+        console.error('Error fetching requests:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const handleViewDetails = (request) => {
     setSelectedRequest(request);

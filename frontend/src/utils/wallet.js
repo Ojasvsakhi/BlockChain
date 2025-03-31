@@ -522,7 +522,7 @@ export async function getUserList() {
       //const provider = new ethers.BrowserProvider(window.ethereum);
       //const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
 
-          const contract = await createEthereumContract();
+        const contract = await createEthereumContract();
 
 
         const length = await contract.showUserVerificationReqListLength();
@@ -537,6 +537,7 @@ export async function getUserList() {
               status: Number(res[1]) // Convert BigInt to a regular number
             });
         }
+        //console.log(userList);
         return userList;
     } catch (error) {
         console.error("Error fetching user list:", error);
@@ -546,9 +547,9 @@ export async function getUserList() {
 /** ✅ Fetch list of verifier verification requests */
 export async function getVerifierList() {
     try {
-        const contract = await getContract();
+         const contract = await createEthereumContract();
         const length = await contract.showVerifierVerificationReqListLength();
-        
+        console.log(length);
         let verifierList = [];
         for (let i = 0; i < length; i++) {
             const res = await contract.showVerifierVerificationReqList(i);

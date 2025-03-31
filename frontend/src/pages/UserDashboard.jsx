@@ -32,7 +32,7 @@ const UserDashboard = () => {
     window.onbeforeunload = (e) => {
       e.preventDefault();
       e.returnValue = '';
-    };
+    },[];
 
     // Add popstate event listener
     window.history.pushState(null, null, window.location.pathname);
@@ -52,13 +52,17 @@ const UserDashboard = () => {
       setLoading(true);
       const verificationList = await getUserList();
       // Set the state with the fetched list
-      setRequests(verificationList);
+      //setRequests(verificationList);
+      setRequests((prev) => [...verificationList]);
     } catch (error) {
       console.error('Error fetching requests:', error);
     } finally {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    console.log("Updated Requests:", requests);
+}, [requests]); // Runs whenever `requests` updates
 
   const handleAddDocument = () => {
     setOpenDialog(true);
