@@ -1,160 +1,160 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import {UserProfile} from "./../components/UserProfile";
 import {
-  ThemeProvider,
-  createTheme,
-  CssBaseline,
-  Typography,
-  IconButton,
-  Box,
-  Button,
-  Grid,
+  Container,
   Paper,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-  AppBar,
-  Toolbar,
-  Modal,
-  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Button,
+  Typography,
+  Box,
+  Chip,
+  CircularProgress
 } from "@mui/material";
-import {
-  Brightness4,
-  Brightness7,
-  Menu as MenuIcon,
-} from "@mui/icons-material";
-
-function UserDashboard() {
-  const [darkMode, setDarkMode] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+import AddIcon from "@mui/icons-material/Add";
+import AddDocumentDialog from "../components/AddDocument";
+const UserDashboard = () => {
   const navigate = useNavigate();
-  const handleThemeToggle = () => {
-    setDarkMode(!darkMode);
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const mockRequests = [
+    {
+      id: 1,
+      documentId: "DOC001",
+      documentType: "Aadhar Card",
+      issuerName: "UIDAI",
+      status: "Approved",
+      timestamp: Date.now()
+    },
+    {
+      id: 2,
+      documentId: "DOC002",
+      documentType: "Pan Card",
+      issuerName: "Income Tax Dept",
+      status: "Pending",
+      timestamp: Date.now() - 86400000
+    }
+  ];
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
+  const fetchRequests = async () => {
+    try {
+      setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setRequests(mockRequests);
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen);
+  const handleAddDocument = () => {
+    setOpenDialog(true);
   };
-
-  const handleUser = () => {
-    navigate("/UserProfile");
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
-  const theme = createTheme({
-    palette: {
-      mode: darkMode ? "dark" : "light",
-      primary: {
-        main: "#1976d2",
-      },
-      secondary: {
-        main: "#ff4081",
-      },
-    },
-    typography: {
-      fontFamily: "Roboto, Arial, sans-serif",
-    },
-  });
+  const handleSubmitDocument = (formData) => {
+    console.log('Submitted:', formData);
+    setOpenDialog(false);
+  };
+  const getStatusChipProps = (status) => {
+    switch (status) {
+      case 'Approved':
+        return { color: 'success', variant: 'filled' };
+      case 'Pending':
+        return { color: 'warning', variant: 'filled' };
+      default:
+        return { color: 'error', variant: 'filled' };
+    }
+  };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box sx={{ display: "flex", height: "100vh", flexDirection: "column" }}>
-        <AppBar position="fixed" color="default" elevation={0}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleDrawerToggle}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              User Dashboard
-            </Typography>
-            <IconButton
-              onClick={handleThemeToggle}
-              sx={{
-                border: "1px solid",
-                borderColor: darkMode ? "white" : "black",
-                borderRadius: 4,
-                padding: "8px",
-                backgroundColor: darkMode ? "#424242" : "#ffffff",
-              }}
-            >
-              {darkMode ? <Brightness7 /> : <Brightness4 />}
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-
-        <Box sx={{ display: "flex", flexGrow: 1, mt: 8 }}>
-          <Drawer
-            variant="temporary"
-            open={drawerOpen}
-            onClose={handleDrawerToggle}
-            sx={{
-              [`& .MuiDrawer-paper`]: { width: 240, boxSizing: "border-box" },
-            }}
-          >
-            <Toolbar />
-            <Box
-              sx={{
-                overflow: "auto",
-                display: "flex",
-                flexDirection: "column",
-                "& > button": {
-                  justifyContent: "flex-start",
-                  width: "100%",
-                },
-              }}
-            >
-              <Button variant="text" onClick={handleUser}>Profile</Button>
-              <Button variant="text">Logs</Button>
-              <Button variant="text">Settings</Button>
-            </Box>
-          </Drawer>
-
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              p: 3,
-              height: "100%",
-              backgroundColor: darkMode ? "#303030" : "#f5f5f5",
-            }}
-          >
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <Paper elevation={3} sx={{ p: 2 }}>
-                  <Typography variant="h6">Profile Overview</Typography>
-                  <Typography variant="body2">Name: John Doe</Typography>
-                  <Typography variant="body2">Role: User</Typography>
-                </Paper>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Paper elevation={3} sx={{ p: 2 }}>
-                  <Typography variant="h6">Recent Activity</Typography>
-                  <Typography variant="body2">
-                    - Logged in from new device
-                  </Typography>
-                  <Typography variant="body2">
-                    - Updated profile picture
-                  </Typography>
-                </Paper>
-              </Grid>
-            </Grid>
-
-            <Box mt={4}>
-              <Button variant="contained" color="primary">
-                View More Details
-              </Button>
-            </Box>
-          </Box>
-        </Box>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Typography variant="h4" component="h1" fontWeight="bold">
+          My Documents
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleAddDocument}
+        >
+          Add Verification Request
+        </Button>
       </Box>
-    </ThemeProvider>
+
+      <Paper elevation={3}>
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+            <CircularProgress />
+          </Box>
+        ) : requests.length === 0 ? (
+          <Box sx={{ textAlign: 'center', p: 4 }}>
+            <Typography color="text.secondary">
+              No verification requests found
+            </Typography>
+          </Box>
+        ) : (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Document ID</TableCell>
+                  <TableCell>Type</TableCell>
+                  <TableCell>Issuer</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Date</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {requests.map((request) => (
+                  <TableRow 
+                    key={request.id}
+                    hover
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {request.documentId}
+                    </TableCell>
+                    <TableCell>{request.documentType}</TableCell>
+                    <TableCell>{request.issuerName}</TableCell>
+                    <TableCell>
+                      <Chip 
+                        label={request.status}
+                        size="small"
+                        {...getStatusChipProps(request.status)}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      {new Date(request.timestamp).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      })}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Paper>
+      <AddDocumentDialog 
+        open={openDialog}
+        onClose={handleCloseDialog}
+        onSubmit={handleSubmitDocument}
+      />
+    </Container>
   );
-}
+};
 
 export default UserDashboard;
