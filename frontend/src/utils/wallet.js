@@ -550,17 +550,43 @@ export async function getVerifierList() {
          const contract = await createEthereumContract();
         const length = await contract.showVerifierVerificationReqListLength();
         console.log(length);
-        let verifierList = [];
-        for (let i = 0; i < length; i++) {
-            const res = await contract.showVerifierVerificationReqList(i);
-            verifierList.push({
-                cid: res.cid,
-                metaIndex: res.metaIndex.toNumber(),
-                status: res.status.toNumber(),
-                user: res.user,
-            });
+        // let verifierList = [];
+        // for (let i = 0; i < length; i++) {
+        //     const res = await contract.showVerifierVerificationReqList(i);
+        //     verifierList.push({
+        //         cid: res.cid,
+        //         metaIndex: res.metaIndex.toNumber(),
+        //         status: res.status.toNumber(),
+        //         user: res.user,
+        //     });
+        // }
+        const userList = [];
+        let i = 0;
+        while(i<length){
+          const obj = {};
+          let res = await contract.showVerifierVerificationReqList(i);
+          obj.cid = res.cid;
+          obj.id = res.id;
+          obj.metaIndex = res.metaIndex.toNumber();
+          obj.status = res.status.toNumber();
+          obj.user = res.user;
+
+          res = await contract.showVerifierVerificationReqScopeList(i);
+          obj.sex = res.sex;
+          obj.name = res.name;
+          obj.dob = res.dob;
+          obj.mobile = res.mobile?.toNumber();
+          obj.email = res.email;
+          obj.college = res.college;
+
+          res = await contract.showVerifierVerificationReqScopeBoolsList(i);
+          obj.isOver18 = res.isOver18?.toNumber();
+          obj.isCollegeStudent = res.isCollegeStudent?.toNumber();
+          
+          userList.push(obj)
+          i++;
         }
-        return verifierList;
+        return userList;
     } catch (error) {
         console.error("Error fetching verifier list:", error);
     }
