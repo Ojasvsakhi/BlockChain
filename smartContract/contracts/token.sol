@@ -42,8 +42,8 @@ contract Token {
     constructor(){
         owner = msg.sender;
 
-        //addressVerifierMap["0x27510d27b0B5c8c813A893726DcEAB6a933345da"] = "RTO";
-        //verifierAddressMap["RTO"] = "0x27510d27b0B5c8c813A893726DcEAB6a933345da";
+        addressVerifierMap["0xA428307EE5a4768904D41C660f26cD03D2b8e2cA"] = "RTO";
+        verifierAddressMap["RTO"] = "0xA428307EE5a4768904D41C660f26cD03D2b8e2cA";
         //addressVerifierMap["0xf4b949991740de4c090851059ebf9d985fb46bb3"] = "MNNIT A";
         //verifierAddressMap["MNNIT A"] = "0xf4b949991740de4c090851059ebf9d985fb46bb3";
         addressVerifierMap["0x93C6b9f263BC2437a1Ee9e42a7E85fB1473A9252"] = "UIDAI";

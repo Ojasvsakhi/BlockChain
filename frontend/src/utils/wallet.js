@@ -31,7 +31,7 @@ export const getChainId = async () => {
 };
 
 
-const CONTRACT_ADDRESS = "0x4F05010350100c9179351F0A97F1bF11AA5ce72d";
+const CONTRACT_ADDRESS = "0x368eb6dCD0cb136bbc735aD58738f18A3Fb87e21";
 const CONTRACT_ABI = [
   {
     "inputs": [],
@@ -547,7 +547,9 @@ export async function getUserList() {
 /** ✅ Fetch list of verifier verification requests */
 export async function getVerifierList() {
     try {
-         const contract = await createEthereumContract();
+         //const contract = await createEthereumContract();
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider)
         const length = await contract.showVerifierVerificationReqListLength();
         console.log(length);
         // let verifierList = [];
