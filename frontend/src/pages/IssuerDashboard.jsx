@@ -13,12 +13,9 @@ import {
   Box,
   Chip,
   CircularProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import ViewDocument from '../components/ViewDocument';
 
 const IssuerDashboard = () => {
   const [requests, setRequests] = useState([]);
@@ -60,7 +57,7 @@ const IssuerDashboard = () => {
   const fetchRequests = async () => {
     try {
       setLoading(true);
-      // Simulate API call
+      // Replace with your blockchain data fetching
       await new Promise(resolve => setTimeout(resolve, 1000));
       setRequests(mockRequests);
     } catch (error) {
@@ -78,6 +75,25 @@ const IssuerDashboard = () => {
   const handleCloseDialog = () => {
     setSelectedRequest(null);
     setOpenDialog(false);
+  };
+
+  const handleUpdateStatus = async (requestId, newStatus) => {
+    try {
+      setLoading(true);
+      // Replace with your blockchain transaction
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setRequests(prev => 
+        prev.map(req => 
+          req.id === requestId ? { ...req, status: newStatus } : req
+        )
+      );
+      handleCloseDialog();
+    } catch (error) {
+      console.error('Error updating status:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getStatusChipProps = (status) => {
@@ -148,34 +164,12 @@ const IssuerDashboard = () => {
         )}
       </Paper>
 
-      {/* Details Dialog */}
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ fontWeight: 'bold' }}>
-          Document Details
-        </DialogTitle>
-        <DialogContent dividers>
-          {selectedRequest && (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Typography variant="subtitle2">Document Type</Typography>
-              <Typography>{selectedRequest.documentType}</Typography>
-
-              <Typography variant="subtitle2">Document ID</Typography>
-              <Typography>{selectedRequest.documentId}</Typography>
-
-              <Typography variant="subtitle2" sx={{ mt: 2 }}>Additional Information</Typography>
-              {selectedRequest.additionalFields.map((field, index) => (
-                <Box key={index}>
-                  <Typography variant="subtitle2">{field.label}</Typography>
-                  <Typography>{field.value}</Typography>
-                </Box>
-              ))}
-            </Box>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Close</Button>
-        </DialogActions>
-      </Dialog>
+      <ViewDocument 
+        open={openDialog}
+        onClose={handleCloseDialog}
+        selectedRequest={selectedRequest}
+        onUpdateStatus={handleUpdateStatus}
+      />
     </Container>
   );
 };
