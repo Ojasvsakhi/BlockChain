@@ -15,7 +15,7 @@ function Login() {
     localStorage.setItem("role", "user");
     localStorage.setItem("walletAddress", account);
     //Const issuerAddress
-    if(account === "0xd1d89b0009eb74f78c86409f333044a4ab37192f".toLowerCase()){
+    if(account === "0x93C6b9f263BC2437a1Ee9e42a7E85fB1473A9252".toLowerCase()){
       navigate("/IssuerDashboard");
     }else
       navigate("/UserDashboard");
