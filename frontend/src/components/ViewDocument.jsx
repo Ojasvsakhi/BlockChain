@@ -28,38 +28,38 @@ const ViewDocument = ({
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Box>
               <Typography variant="subtitle2" color="text.secondary">Name</Typography>
-              <Typography>{selectedRequest.name}</Typography>
+              <Typography>{selectedRequest.name||"N/A"}</Typography>
             </Box>
 
             <Box>
               <Typography variant="subtitle2" color="text.secondary">Date of Birth</Typography>
-              <Typography>{selectedRequest.dob}</Typography>
+              <Typography>{selectedRequest.dob||"N/A"}</Typography>
             </Box>
 
             <Box>
               <Typography variant="subtitle2" color="text.secondary">Sex</Typography>
-              <Typography>{selectedRequest.sex}</Typography>
+              <Typography>{selectedRequest.sex||"N/A"}</Typography>
             </Box>
 
             <Divider />
 
             <Box>
               <Typography variant="subtitle2" color="text.secondary">Contact Information</Typography>
-              <Typography>Email: {selectedRequest.email}</Typography>
-              <Typography>Mobile: {selectedRequest.mobile}</Typography>
+              <Typography>Email: {selectedRequest.email||"N/A"}</Typography>
+              <Typography>Mobile: {selectedRequest.mobile||"N/A"}</Typography>
             </Box>
 
             <Divider />
 
             <Box>
               <Typography variant="subtitle2" color="text.secondary">Education</Typography>
-              <Typography>College: {selectedRequest.college}</Typography>
+              <Typography>College: {selectedRequest.college||"N/A"}</Typography>
             </Box>
 
             <Box>
               <Typography variant="subtitle2" color="text.secondary">Verification Status</Typography>
-              <Typography>Over 18: {getBooleanText(selectedRequest.isOver18)}</Typography>
-              <Typography>College Student: {getBooleanText(selectedRequest.isCollegeStudent)}</Typography>
+              <Typography>Over 18: {getBooleanText(selectedRequest.isOver18)||"N/A"}</Typography>
+              <Typography>College Student: {getBooleanText(selectedRequest.isCollegeStudent)||"N/A"}</Typography>
             </Box>
           </Box>
         )}

@@ -74,7 +74,7 @@ const UserDashboard = () => {
         return "Pending";
       case 1:
         return "Approved";
-      case 2:
+      case -1:
         return "Rejected";
       default:
         return "Unknown";
@@ -86,7 +86,7 @@ const UserDashboard = () => {
         return { color: "success", variant: "filled" };
       case 0: // Pending
         return { color: "warning", variant: "filled" };
-      case 2: // Rejected
+      case -1: // Rejected
         return { color: "error", variant: "filled" };
       default:
         return { color: "default", variant: "filled" };

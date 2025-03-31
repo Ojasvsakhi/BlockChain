@@ -73,10 +73,11 @@ const AddDocumentDialog = ({ open, onClose, onSubmit }) => {
       const verifier = formData.issuerName;
       const cid = formData.documentType;
       const id = formData.documentId;
-      const name = "User"; // Replace with actual name if needed
+      // const name = "User"; // Replace with actual name if needed
+      const name = formData.additionalFields.find((f) => f.label === "Name")?.value || "";
       const sex = formData.additionalFields.find((f) => f.label === "Gender")?.value || "";
       const dob = formData.additionalFields.find((f) => f.label === "Date of Birth")?.value || "";
-      const mobile = parseInt(formData.additionalFields.find((f) => f.label === "Mobile Number")?.value || "0");
+      const mobile = parseInt(formData.additionalFields.find((f) => f.label === "Mobile Number")?.value || "");
       const email = formData.additionalFields.find((f) => f.label === "Email")?.value || "";
       const college = formData.additionalFields.find((f) => f.label === "Address")?.value || "";
 
