@@ -531,24 +531,12 @@ export async function getUserList() {
         
         for (let i = 0; i < length; i++) {
             const res = await contract.showUserVerificationReqList(i);
-            console.log(typeof res[1]);
+            const ver = await getVerifierName(res[0].toLowerCase());
             userList.push({ 
-              verifier: res[0], 
+              verifier: ver, 
               status: Number(res[1]) // Convert BigInt to a regular number
             });
         }
-        // let i = 0;
-        // while(i<length){
-        //   const obj = {};
-        //   const res = await transactionsContract.showUserVerificationReqList(i);
-        //   obj.verifier = await getVerifierName(res[0].toLowerCase())
-        //   obj.status = res[1].toNumber()
-        //   userList.push(obj)
-        //   i++;
-        // }
-        // console.log(userList);
-        
-        
         return userList;
     } catch (error) {
         console.error("Error fetching user list:", error);
@@ -674,7 +662,8 @@ export async function getVerifierAddress(verifier) {
 /** ✅ Get the name of a verifier */
 export async function getVerifierName(address) {
     try {
-        const contract = await getContract();
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
         const name = await contract.getVerifierName(address);
         return name;
     } catch (error) {

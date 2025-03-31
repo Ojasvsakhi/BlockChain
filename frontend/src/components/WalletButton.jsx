@@ -31,7 +31,7 @@ const WalletButton = ({ onConnect }) => {
       onClick={connectWallet}
       startIcon={<AccountBalanceWalletIcon />}
     >
-      {account ? `Connected: ${account.substring(0, 6)}...${account.substring(38)}` : 'Connect Wallet'}
+      {account ? `Connected: ${account}` : 'Connect Wallet'}
     </Button>
   );
 };

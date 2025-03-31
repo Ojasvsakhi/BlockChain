@@ -9,11 +9,15 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const navigate = useNavigate();
   const [role, setRole] = useState("user");
+
   const handleWalletConnect = (account) => {
     localStorage.setItem("isAuthenticated", true);
     localStorage.setItem("role", "user");
     localStorage.setItem("walletAddress", account);
-    navigate("/UserDashboard");
+    if(account === "0xA428307EE5a4768904D41C660f26cD03D2b8e2cA".toLowerCase()){
+      navigate("/IssuerDashboard");
+    }else
+      navigate("/UserDashboard");
   };
   const handleLogin = () => {
     localStorage.setItem("isAuthenticated", true);
