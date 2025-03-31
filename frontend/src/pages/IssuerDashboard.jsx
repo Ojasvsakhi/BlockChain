@@ -109,13 +109,14 @@ const IssuerDashboard = () => {
                   <TableCell>Wallet Address</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell align="center">Actions</TableCell>
+                  <TableCell>User</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {requests.map((request) => (
-                  <TableRow key={request.id} hover>
-                    <TableCell>{request.id}</TableCell>
-                    <TableCell>{request.address}</TableCell>
+                  <TableRow key={request.cid} hover>
+                    <TableCell>{request.cid}</TableCell>
+                    <TableCell>{request.metaIndex}</TableCell>
                     <TableCell>
                       <Chip 
                         label={request.status}
@@ -132,6 +133,7 @@ const IssuerDashboard = () => {
                         View Details
                       </Button>
                     </TableCell>
+                    <TableCell>{request.user}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
