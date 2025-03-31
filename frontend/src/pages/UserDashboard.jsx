@@ -13,10 +13,12 @@ import {
   Typography,
   Box,
   Chip,
+  IconButton,
   CircularProgress
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import AddDocumentDialog from "../components/AddDocument";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
@@ -43,7 +45,9 @@ const UserDashboard = () => {
   useEffect(() => {
     fetchRequests();
   }, []);
-
+  const handleProfile = () => {
+    navigate('/UserProfile');
+  }
   const fetchRequests = async () => {
     try {
       setLoading(true);
@@ -80,6 +84,18 @@ const UserDashboard = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+      <IconButton 
+      color="primary" 
+      size="large"
+      onClick={handleProfile}
+      sx={{ 
+        '&:hover': { 
+          backgroundColor: 'rgba(25, 118, 210, 0.04)'
+        }
+      }}
+    >
+      <AccountCircleIcon fontSize="large" />
+    </IconButton>
         <Typography variant="h4" component="h1" fontWeight="bold">
           My Documents
         </Typography>

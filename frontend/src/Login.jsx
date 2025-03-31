@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import {
   Container,
   Typography,
-  TextField,
-  Button,
-  Divider,
   Box,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
 } from "@mui/material";
 import WalletButton from "./components/WalletButton";
 import { useNavigate } from "react-router-dom";
@@ -51,11 +45,15 @@ function Login() {
         sx={{
           backgroundColor: "#00FFFF",
           borderRadius: 4,
-          width: "30vw",
-          padding: 4,
+          height: "35vh",
+          width: "38vw",
+          padding: 5,
           boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
         }}
       >
+      <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", paddingBottom: 20 }}>
+          Decentralized Identity Management
+      </Typography>
         {/* Login with Wallet */}
         <WalletButton onConnect={handleWalletConnect}/>
       </Box>
