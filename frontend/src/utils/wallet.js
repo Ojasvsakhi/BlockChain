@@ -586,6 +586,7 @@ export async function getVerifierList() {
           userList.push(obj)
           i++;
         }
+        console.log(userList);
         return userList;
     } catch (error) {
         console.error("Error fetching verifier list:", error);
