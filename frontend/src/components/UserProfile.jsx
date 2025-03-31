@@ -10,6 +10,7 @@ import {
   Divider,
 } from "@mui/material";
 
+
 const UserProfile = () => {
   const darkMode = false;
 

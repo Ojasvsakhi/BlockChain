@@ -14,7 +14,7 @@ import {
   IconButton,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-
+import {submitDoc} from "../utils/wallet.js"
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const AddDocumentDialog = ({ open, onClose, onSubmit }) => {
@@ -65,6 +65,30 @@ const AddDocumentDialog = ({ open, onClose, onSubmit }) => {
       ...prev,
       additionalFields: prev.additionalFields.filter((_, i) => i !== index),
     }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      // Extract data from form
+      const verifier = formData.issuerName;
+      const cid = formData.documentType;
+      const id = formData.documentId;
+      const name = "User"; // Replace with actual name if needed
+      const sex = formData.additionalFields.find((f) => f.label === "Gender")?.value || "";
+      const dob = formData.additionalFields.find((f) => f.label === "Date of Birth")?.value || "";
+      const mobile = parseInt(formData.additionalFields.find((f) => f.label === "Mobile Number")?.value || "0");
+      const email = formData.additionalFields.find((f) => f.label === "Email")?.value || "";
+      const college = formData.additionalFields.find((f) => f.label === "Address")?.value || "";
+
+      // Call blockchain function
+      const txHash = await submitDoc(verifier, cid, id, name, sex, dob, mobile, email, college);
+
+      alert(`Document submitted! Tx Hash: ${txHash}`);
+      onClose();
+    } catch (error) {
+      console.error("Submission failed:", error);
+      alert("Error submitting document!");
+    }
   };
 
   const renderField = (field, index) => {
@@ -236,7 +260,7 @@ const AddDocumentDialog = ({ open, onClose, onSubmit }) => {
           Cancel
         </Button>
         <Button
-          onClick={() => onSubmit(formData)}
+          onClick={handleSubmit}
           variant="contained"
           startIcon={<AddIcon />}
         >

@@ -19,29 +19,14 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import AddDocumentDialog from "../components/AddDocument";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import {getUserList} from "../utils/wallet.js"
+
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const mockRequests = [
-    {
-      id: 1,
-      documentId: "DOC001",
-      documentType: "Aadhar Card",
-      issuerName: "UIDAI",
-      status: "Approved",
-      timestamp: Date.now()
-    },
-    {
-      id: 2,
-      documentId: "DOC002",
-      documentType: "Pan Card",
-      issuerName: "Income Tax Dept",
-      status: "Pending",
-      timestamp: Date.now() - 86400000
-    }
-  ];
+  const mockRequests = [];
   useEffect(() => {
     fetchRequests();
     window.onbeforeunload = (e) => {
@@ -65,8 +50,9 @@ const UserDashboard = () => {
   const fetchRequests = async () => {
     try {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setRequests(mockRequests);
+      const verificationList = await getUserList();
+      // Set the state with the fetched list
+      setRequests(verificationList);
     } catch (error) {
       console.error('Error fetching requests:', error);
     } finally {
