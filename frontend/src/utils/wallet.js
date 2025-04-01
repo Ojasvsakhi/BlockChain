@@ -31,7 +31,7 @@ export const getChainId = async () => {
 };
 
 
-const CONTRACT_ADDRESS = "0x368eb6dCD0cb136bbc735aD58738f18A3Fb87e21";
+const CONTRACT_ADDRESS = "0x1A0c764885D7257234295B21bC10C7cCB540C321";
 const CONTRACT_ABI = [
   {
     "inputs": [],
@@ -514,11 +514,32 @@ const createEthereumContract = async () => {
 
 export async function getUserDetails(){
   try {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
-    const user = await contract.showUserInfo();
-    console.log("user details from contract",user);
-    return user;
+    const contract = await createEthereumContract();
+    const [
+      name,
+      sex,
+      dob,
+      mobile,
+      email,
+      college,
+      isOver18,
+      isCollegeStudent
+    ] = await contract.showUserInfo();
+
+    // Convert BigNumbers to strings/numbers
+    const userDetails = {
+      name,
+      sex,
+      dob,
+      mobile: mobile.toString(),
+      email,
+      college,
+      isOver18: isOver18.toString(),
+      isCollegeStudent: isCollegeStudent.toString()
+    };
+
+    console.log("User details:", userDetails);
+    return userDetails;
   } catch (error) {
     console.log("Error while fetching userInfo",error);
   }
@@ -658,11 +679,12 @@ export async function giveAccess(org, name, sex, dob, mobile, email, college) {
 }
 
 /** ✅ Verifier verifies a request */
-export async function verifyRequest(user, metaIndex, decision) {
+export async function verifyRequest(user, index, decision) {
     try {
       const contract = await createEthereumContract();
-
-        const tx = await contract.verifyReq(user, metaIndex, decision);
+      let d = true;
+      if(decision === -1) d = false;
+        const tx = await contract.verifyReq(user, index, d);
         await tx.wait();
         console.log("Verification Successful:", tx.hash);
         return tx.hash;

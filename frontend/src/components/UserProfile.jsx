@@ -48,7 +48,7 @@ const UserProfile = () => {
 
   const fetchUser = async()=>{
     const user = await getUserDetails();
-    console.log("user Details",user);
+    //console.log("user Details",user);
     setUserInfo(user);
   }
 
