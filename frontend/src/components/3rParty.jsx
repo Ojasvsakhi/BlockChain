@@ -36,7 +36,7 @@ export const Popup = ({
     try {
       await giveAccess("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa",true,false,false,false,false,false,true,false);
       console.log("Access granted");
-      await getVerifiedDataThirdParty("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa");
+      //await getVerifiedDataThirdParty("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa"); //needs to be called by thirdParty website
       localStorage.setItem("verificationResponse", "approved");
       localStorage.removeItem("awaitingResponse");
       onClose();
