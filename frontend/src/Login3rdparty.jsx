@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Typography,
@@ -8,10 +8,10 @@ import {
   Divider,
   Stack,
 } from "@mui/material";
-import GoogleIcon from '@mui/icons-material/Google';
+import GoogleIcon from "@mui/icons-material/Google";
 import WalletButton from "./components/WalletButton";
 import { useNavigate } from "react-router-dom";
-import {Popup} from "./components/3rParty";
+import { Popup } from "./components/3rParty";
 function Login3rdparty() {
   const navigate = useNavigate();
   const [role, setRole] = useState("user");
@@ -19,6 +19,8 @@ function Login3rdparty() {
   const [password, setPassword] = useState("");
   const [openPopup, setOpenPopup] = useState(false); // Add this state
   const [isWaiting, setIsWaiting] = useState(false);
+  const [responseStatus, setResponseStatus] = useState(null);
+
   const handleWalletConnect = (account) => {
     localStorage.setItem("isAuthenticated", true);
     localStorage.setItem("role", "user");
@@ -31,7 +33,21 @@ function Login3rdparty() {
   const handleLogin = (e) => {
     e.preventDefault(); // Open popup when login is clicked
   };
-
+  useEffect(() => {
+    if (isWaiting) {
+      const checkInterval = setInterval(() => {
+        const response = localStorage.getItem("verificationResponse");
+        if (response) {
+          setResponseStatus(response);
+          setIsWaiting(false);
+          localStorage.removeItem("verificationResponse");
+          clearInterval(checkInterval);
+        }
+      }, 1000);
+  
+      return () => clearInterval(checkInterval);
+    }
+  }, [isWaiting]);
   const handlePopupClose = () => {
     setOpenPopup(false);
     setIsWaiting(false);
@@ -94,13 +110,13 @@ function Login3rdparty() {
           type="submit"
           variant="contained"
           fullWidth
-          sx={{ 
+          sx={{
             mt: 2,
             backgroundColor: "#1976d2",
             color: "white",
             "&:hover": {
-              backgroundColor: "#1565c0"
-            }
+              backgroundColor: "#1565c0",
+            },
           }}
         >
           Login
@@ -114,33 +130,40 @@ function Login3rdparty() {
             fullWidth
             startIcon={<GoogleIcon />}
             onClick={handleLogin}
-            sx={{ 
+            sx={{
               backgroundColor: "white",
               color: "#757575",
               "&:hover": {
-                backgroundColor: "#f5f5f5"
-              }
+                backgroundColor: "#f5f5f5",
+              },
             }}
           >
             Continue with Google
           </Button>
 
-          <WalletButton 
-            onConnect={handleWalletConnect}
-            disabled={isWaiting}
-          />
-          
+          <WalletButton onConnect={handleWalletConnect} disabled={isWaiting} />
+
           {isWaiting && (
-            <Typography 
-              color="info.main" 
-              sx={{ textAlign: 'center', mt: 1 }}
-            >
+            <Typography color="info.main" sx={{ textAlign: "center", mt: 1 }}>
               Awaiting response from verification...
+            </Typography>
+          )}
+          {!isWaiting && responseStatus === "approved" && (
+            <Typography
+              color="success.main"
+              sx={{ textAlign: "center", mt: 1 }}
+            >
+              Verification approved! Redirecting to dashboard...
+            </Typography>
+          )}
+          {!isWaiting && responseStatus === "rejected" && (
+            <Typography color="error.main" sx={{ textAlign: "center", mt: 1 }}>
+              Verification rejected. Please try again.
             </Typography>
           )}
         </Stack>
       </Box>
-      <Popup 
+      <Popup
         open={openPopup}
         onClose={handlePopupClose}
         websiteName="Third Party Website"
