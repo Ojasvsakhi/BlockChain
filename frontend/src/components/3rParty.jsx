@@ -27,14 +27,25 @@ export const Popup = ({
 
   const handleReject = () => {
     console.log("Access denied");
+    localStorage.setItem("verificationResponse", "rejected");
+    localStorage.removeItem("awaitingResponse");
     onClose();
   };
 
-  const handleApprove = () => {
-    giveAccess("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa",true,false,false,false,false,false,true,false);
-    console.log("Access granted");
-    getVerifiedDataThirdParty("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa");
-    onClose();
+  const handleApprove = async () => {
+    try {
+      await giveAccess("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa",true,false,false,false,false,false,true,false);
+      console.log("Access granted");
+      await getVerifiedDataThirdParty("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa");
+      localStorage.setItem("verificationResponse", "approved");
+      localStorage.removeItem("awaitingResponse");
+      onClose();
+    } catch (error) {
+      console.error("Error in approval:", error);
+      localStorage.setItem("verificationResponse", "rejected");
+      localStorage.removeItem("awaitingResponse");
+      onClose();
+    }
   };
 
   const requestedData = [
