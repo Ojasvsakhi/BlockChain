@@ -660,15 +660,12 @@ export async function submitDoc(verifier, cid, id, name, sex, dob, mobile, email
 
 
 /** ✅ Give access to an organization */
-export async function giveAccess(org, name, sex, dob, mobile, email, college) {
+export async function giveAccess(org, name, sex, dob, mobile, email, college,isOver18,isCollegeStudent) {
     try {
       const contract = await createEthereumContract();
-        const dobTimestamp = Math.floor(new Date(dob).getTime() / 1000);
-        const isOver18 = new Date(dob).getFullYear() <= new Date().getFullYear() - 18 ? 1 : 0;
-        const isCollegeStudent = college ? 1 : 0;
 
         const tx = await contract.giveAccess(
-            org, name, sex, dobTimestamp, mobile, email, college, isOver18, isCollegeStudent
+            org, name, sex, dob, mobile, email, college, isOver18, isCollegeStudent
         );
         await tx.wait();
         console.log("Access Given:", tx.hash);
@@ -717,3 +714,16 @@ export async function getVerifierName(address) {
     }
 }
 
+
+export async function getVerifiedDataThirdParty(user){
+  try {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+    const userDetail = await contract.showUserInfoByOrg(user);
+    const boolUserDetail = await contract.showUserInfoBoolsByOrg(user);
+    const user = [...userDetail,...boolUserDetail];
+    return user;
+  } catch (error) {
+    console.error("Error while Fetching Data for third party!",error);
+  }
+}

@@ -17,25 +17,29 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import WarningIcon from '@mui/icons-material/Warning';
+import { getVerifiedDataThirdParty, giveAccess } from '../utils/wallet.js';
 
 export const Popup = ({ 
   open, 
   onClose,
   websiteName = "Example Website", // Add default value
 }) => {
+
   const handleReject = () => {
     console.log("Access denied");
     onClose();
   };
 
   const handleApprove = () => {
+    giveAccess("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa",true,false,false,false,false,false,true,false);
     console.log("Access granted");
+    getVerifiedDataThirdParty("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa");
     onClose();
   };
 
   const requestedData = [
     "Name",
-    "Aadhaar Number"
+    "isOver18"
   ];
 
   return (
