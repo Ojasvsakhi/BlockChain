@@ -30,10 +30,10 @@ export const Popup = ({
     onClose();
   };
 
-  const handleApprove = () => {
-    giveAccess("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa",true,false,false,false,false,false,true,false);
-    console.log("Access granted");
-    getVerifiedDataThirdParty("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa");
+  const handleApprove = async () => {
+    const tx = await giveAccess("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa",true,false,false,false,false,false,true,false);
+    console.log("Access granted",tx);
+    //getVerifiedDataThirdParty("0xcF192f467046B6a9E69CF5d257f8c873b6DfadFa");
     onClose();
   };
 
