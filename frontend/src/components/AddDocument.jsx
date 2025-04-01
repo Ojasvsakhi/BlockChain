@@ -82,6 +82,7 @@ const AddDocumentDialog = ({ open, onClose, onSubmit }) => {
       const college = formData.additionalFields.find((f) => f.label === "Address")?.value || "";
 
       // Call blockchain function
+      console.log(formData);
       const txHash = await submitDoc(verifier, cid, id, name, sex, dob, mobile, email, college);
 
       alert(`Document submitted! Tx Hash: ${txHash}`);

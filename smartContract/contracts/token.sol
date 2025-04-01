@@ -130,9 +130,10 @@ contract Token {
     }
 
     function verifyReq(address user, uint index, bool decision) public {
+         VReq storage vreq = VerifierVReqs[msg.sender][index]; //msg.sender instead of user
+         require(vreq.user == user, "Request does not belong to this user");
         if (decision) {
-            VReq memory vreq = VerifierVReqs[user][index];
-            VerifierVReqs[user][index].status = 1;
+            vreq.status = 1;
             UserVReqs[vreq.user][vreq.metaIndex].status = 1;
             if (keccak256(abi.encodePacked(vreq.scopes.name)) != keccak256(abi.encodePacked(""))) {
                 UserInfo[vreq.user].name = vreq.scopes.name;
@@ -160,7 +161,6 @@ contract Token {
             }
         }
         else {
-            VReq memory vreq = VerifierVReqs[user][index];
             vreq.status = -1;
             UserVReqs[vreq.user][vreq.metaIndex].status = -1;
         }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -7,7 +7,7 @@ import {
   Button,
   Typography,
   Box,
-  Divider,
+  Divider
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -17,6 +17,7 @@ const ViewDocument = ({
   open, 
   onClose, 
   selectedRequest, 
+  index,
   onUpdateStatus 
 }) => {
   const getBooleanText = (value) => value === 1 ? 'Yes' : 'No';
@@ -33,9 +34,10 @@ const ViewDocument = ({
     }
   };
 
+
   const handleReject = async (selectedRequest,decision)=>{
     try{
-      await verifyRequest(selectedRequest.id,selectedRequest.metaIndex,decision);
+      await verifyRequest(selectedRequest.user,index,decision);
       onUpdateStatus(selectedRequest.id, decision)
     }catch(error){
       console.log("Error while Rejection the Document!",error);
@@ -45,11 +47,12 @@ const ViewDocument = ({
 
 
   const handleApprove = async (selectedRequest,decision)=>{
+    console.log(selectedRequest);
     try{
-      await verifyRequest(selectedRequest.id,selectedRequest.metaIndex,decision);
+      await verifyRequest(selectedRequest.user,index,decision);
       onUpdateStatus(selectedRequest.id, decision)
     }catch(error){
-      console.log("Error while Rejection the Document!",error);
+      console.log("Error while Approving the Document!",error);
     }
     onClose();
   }
@@ -112,7 +115,7 @@ const ViewDocument = ({
             </Button>
             <Button
               //onClick={() => onUpdateStatus(selectedRequest.id, 1)}
-              onClick={() => handleApprove(selectedRequest.id, 1)}
+              onClick={() => handleApprove(selectedRequest, 1)}
               color="success"
               variant="contained"
               startIcon={<CheckIcon />}

@@ -62,8 +62,6 @@ const UserDashboard = () => {
       setLoading(false);
     }
   };
-  useEffect(() => {
-}, [requests]); // Runs whenever `requests` updates
 
   const handleAddDocument = () => {
     setOpenDialog(true);

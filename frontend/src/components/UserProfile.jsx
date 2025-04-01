@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import {
   ThemeProvider,
   createTheme,
@@ -9,6 +9,7 @@ import {
   Grid,
   Divider,
 } from "@mui/material";
+import  {getUserDetails} from '../utils/wallet.js'
 
 
 const UserProfile = () => {
@@ -38,11 +39,18 @@ const UserProfile = () => {
     },
   });
 
-  const userInfo = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    role: "User",
-  };
+ 
+  const [userInfo,setUserInfo] = useState({});
+
+  useEffect(()=>{
+      fetchUser();
+  },[]);
+
+  const fetchUser = async()=>{
+    const user = await getUserDetails();
+    console.log("user Details",user);
+    setUserInfo(user);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -114,14 +122,14 @@ const UserProfile = () => {
                     justifyContent: "space-between",
                   }}>
                     <span style={{ fontWeight: 500 }}>Name:</span>
-                    <span>{userInfo.name}</span>
+                    <span>{userInfo.name || "NaN"}</span>
                   </Typography>
                   <Typography variant="body2" sx={{ 
                     display: "flex",
                     justifyContent: "space-between",
                   }}>
                     <span style={{ fontWeight: 500 }}>Email:</span>
-                    <span>{userInfo.email}</span>
+                    <span>{userInfo.email || "NaN"}</span>
                   </Typography>
                 </Box>
               </Box>
@@ -144,28 +152,28 @@ const UserProfile = () => {
                     justifyContent: "space-between",
                   }}>
                     <span style={{ fontWeight: 500 }}>Role:</span>
-                    <span>{userInfo.role}</span>
+                    <span>{userInfo.role || "NaN"}</span>
                   </Typography>
                   <Typography variant="body2" sx={{ 
                     display: "flex",
                     justifyContent: "space-between",
                   }}>
-                    <span style={{ fontWeight: 500 }}>Status:</span>
-                    <span>Active</span>
+                    <span style={{ fontWeight: 500 }}>Gender:</span>
+                    <span>{userInfo.sex || "NaN"}</span>
                   </Typography>
                   <Typography variant="body2" sx={{ 
                     display: "flex",
                     justifyContent: "space-between",
                   }}>
-                    <span style={{ fontWeight: 500 }}>Member Since:</span>
-                    <span>Jan 2021</span>
+                    <span style={{ fontWeight: 500 }}>DOB:</span>
+                    <span>{userInfo.dob || "NaN"}</span>
                   </Typography>
                   <Typography variant="body2" sx={{ 
                     display: "flex",
                     justifyContent: "space-between",
                   }}>
-                    <span style={{ fontWeight: 500 }}>Last Login:</span>
-                    <span>Mar 28, 2025</span>
+                    <span style={{ fontWeight: 500 }}>Mobile:</span>
+                    <span>{userInfo.mobile || "NaN"}</span>
                   </Typography>
                 </Box>
               </Box>

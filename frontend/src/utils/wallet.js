@@ -512,7 +512,17 @@ const createEthereumContract = async () => {
   return new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 };
 
-
+export async function getUserDetails(){
+  try {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+    const user = await contract.showUserInfo();
+    console.log("user details from contract",user);
+    return user;
+  } catch (error) {
+    console.log("Error while fetching userInfo",error);
+  }
+}
 
 
 /** ✅ Fetch list of user verification requests */
@@ -595,21 +605,20 @@ export async function submitDoc(verifier, cid, id, name, sex, dob, mobile, email
       const verifierAddress = await getVerifierAddress(verifier);
       let dobString = "";
       let isOver18 = 0; // Default if DOB is missing
-
+      if(isNaN(mobile)){
+        mobile = 0;
+      }
+      
       if (dob) {
           const parsedDate = new Date(dob);
-          if (isNaN(parsedDate.getTime())) {
+          if (isNaN(parsedDate?.getTime())) {
               throw new Error(`Invalid DOB: ${dob}`);
           }
-          dobString = parsedDate.toISOString().split("T")[0]; // Convert to YYYY-MM-DD
-          isOver18 = new Date(dob).getFullYear() <= new Date().getFullYear() - 18 ? 1 : 0;
+          dobString = parsedDate?.toISOString()?.split("T")[0]; // Convert to YYYY-MM-DD
+          isOver18 = new Date(dob)?.getFullYear() <= new Date()?.getFullYear() - 18 ? 1 : 0;
       }
 
       const isCollegeStudent = college ? 1 : 0;
-
-      console.log("Calling addVReq with data:", {
-        verifierAddress, cid, id, name, sex, dobString, mobile, email, college, isOver18, isCollegeStudent
-      });
 
       const tx = await contract.addVReq(
         verifierAddress, cid, id, name, sex, dobString, mobile, email, college, isOver18, isCollegeStudent,
@@ -632,7 +641,7 @@ export async function submitDoc(verifier, cid, id, name, sex, dob, mobile, email
 /** ✅ Give access to an organization */
 export async function giveAccess(org, name, sex, dob, mobile, email, college) {
     try {
-        const contract = await getContract();
+      const contract = await createEthereumContract();
         const dobTimestamp = Math.floor(new Date(dob).getTime() / 1000);
         const isOver18 = new Date(dob).getFullYear() <= new Date().getFullYear() - 18 ? 1 : 0;
         const isCollegeStudent = college ? 1 : 0;
@@ -651,7 +660,8 @@ export async function giveAccess(org, name, sex, dob, mobile, email, college) {
 /** ✅ Verifier verifies a request */
 export async function verifyRequest(user, metaIndex, decision) {
     try {
-        const contract = await getContract();
+      const contract = await createEthereumContract();
+
         const tx = await contract.verifyReq(user, metaIndex, decision);
         await tx.wait();
         console.log("Verification Successful:", tx.hash);

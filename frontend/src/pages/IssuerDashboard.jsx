@@ -21,7 +21,8 @@ import {getVerifierList} from "../utils/wallet.js"
 const IssuerDashboard = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [selectedRequest, setSelectedRequest] = useState();
+  const [ind,setIndex] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
   // Mock data - replace with your blockchain data
@@ -43,13 +44,15 @@ const IssuerDashboard = () => {
       }
     };
 
-  const handleViewDetails = (request) => {
+  const handleViewDetails = (request,index) => {
     setSelectedRequest(request);
+    setIndex(index);
     setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
     setSelectedRequest(null);
+    setIndex(null);
     setOpenDialog(false);
   };
 
@@ -124,8 +127,8 @@ const IssuerDashboard = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {requests.map((request) => (
-                  <TableRow key={request.cid} hover>
+                {requests.map((request,index) => (
+                  <TableRow key={index} hover>
                     <TableCell>{request.cid}</TableCell>
                     <TableCell>{request.metaIndex}</TableCell>
                     <TableCell>
@@ -138,7 +141,7 @@ const IssuerDashboard = () => {
                     <TableCell align="center">
                       <Button
                         startIcon={<VisibilityIcon />}
-                        onClick={() => handleViewDetails(request)}
+                        onClick={() => handleViewDetails(request,index)}
                         size="small"
                       >
                         View Details
@@ -157,6 +160,7 @@ const IssuerDashboard = () => {
         open={openDialog}
         onClose={handleCloseDialog}
         selectedRequest={selectedRequest}
+        index = {ind}
         onUpdateStatus={handleUpdateStatus}
       />
     </Container>
