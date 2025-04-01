@@ -1,4 +1,7 @@
 import React, { useEffect,useState } from "react";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
+import { getUserDetails } from '../utils/wallet.js';
 import {
   ThemeProvider,
   createTheme,
@@ -7,23 +10,23 @@ import {
   Box,
   Paper,
   Grid,
+  IconButton,
   Divider,
 } from "@mui/material";
-import  {getUserDetails} from '../utils/wallet.js'
-
-
 const UserProfile = () => {
-  const darkMode = false;
-
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1); // This will navigate back to the previous page
+  };
   const theme = createTheme({
     palette: {
-      mode: darkMode ? "dark" : "light",
+      mode: "light",
       primary: {
         main: "#1976d2",
       },
       background: {
-        default: darkMode ? "#303030" : "#f5f5f5",
-        paper: darkMode ? "#424242" : "#ffffff",
+        default:  "#f5f5f5",
+        paper:  "#ffffff",
       },
     },
     typography: {
@@ -34,7 +37,7 @@ const UserProfile = () => {
       },
       h6: {
         fontWeight: 500,
-        color: darkMode ? "#ffffff" : "#333333",
+        color: "#333333",
       },
     },
   });
@@ -80,6 +83,19 @@ const UserProfile = () => {
             transition: "transform 0.2s ease-in-out",
           }}
         >
+          <Box sx={{ alignSelf: "flex-start"  }}>
+          <IconButton 
+            onClick={handleBack}
+            sx={{ 
+              color: theme.palette.primary.main,
+              '&:hover': {
+                backgroundColor: 'rgba(25, 118, 210, 0.04)',
+              }
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Box>
           <Typography 
             variant="h4" 
             gutterBottom
@@ -109,7 +125,7 @@ const UserProfile = () => {
                 sx={{
                   p: 2,
                   borderRadius: 2,
-                  backgroundColor: darkMode ? "rgba(255,255,255,0.05)" : "rgba(25,118,210,0.05)",
+                  backgroundColor: "rgba(25,118,210,0.05)",
                 }}
               >
                 <Typography variant="h6" gutterBottom>
@@ -139,7 +155,7 @@ const UserProfile = () => {
                 sx={{
                   p: 2,
                   borderRadius: 2,
-                  backgroundColor: darkMode ? "rgba(255,255,255,0.05)" : "rgba(25,118,210,0.05)",
+                  backgroundColor: "rgba(25,118,210,0.05)",
                 }}
               >
                 <Typography variant="h6" gutterBottom>
