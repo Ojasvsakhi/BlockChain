@@ -125,7 +125,7 @@ function Login3rdparty() {
             backgroundColor: "#2e7d32",
             color: "white",
             "&:hover": {
-              backgroundColor: "#1565c0",
+              backgroundColor: "#1b5e20",
             },
           }}
         >
