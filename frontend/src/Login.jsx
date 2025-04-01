@@ -1,69 +1,96 @@
-import React, { useState } from "react";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
-  Typography,
   Box,
-} from "@mui/material";
-import WalletButton from "./components/WalletButton";
-import { useNavigate } from "react-router-dom";
-function Login() {
-  const navigate = useNavigate();
-  const [role, setRole] = useState("user");
+  Button,
+  Typography,
+  Paper,
+} from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import BusinessIcon from '@mui/icons-material/Business';
 
-  const handleWalletConnect = (account) => {
-    localStorage.setItem("isAuthenticated", true);
-    localStorage.setItem("role", "user");
-    localStorage.setItem("walletAddress", account);
-    //Const issuerAddress
-    if(account === "0x93C6b9f263BC2437a1Ee9e42a7E85fB1473A9252".toLowerCase()){
-      navigate("/IssuerDashboard");
-    }else
-      navigate("/UserDashboard");
+const Login = () => {
+  const navigate = useNavigate();
+
+  const handleUserLogin = () => {
+    navigate('/user');
   };
-  const handleLogin = () => {
-    localStorage.setItem("isAuthenticated", true);
-    localStorage.setItem("role", role);
-    if (role === "user") {
-      navigate("/UserDashboard");
-    } else if (role === "issuer") {
-      navigate("/IssuerDashboard");
-    }
-    else if(role === "verifier") {
-      navigate("/VerifierDashboard");
-    }
+
+  const handle3rdPartyLogin = () => {
+    navigate('/3rdparty');
   };
 
   return (
-    <Container
+    <Container 
       maxWidth={false}
       sx={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "primary.main",
-        color: "white",
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'primary.main',
       }}
     >
-      <Box
+      <Paper
+        elevation={6}
         sx={{
-          backgroundColor: "#00FFFF",
-          borderRadius: 4,
-          height: "35vh",
-          width: "38vw",
-          padding: 5,
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+          p: 4,
+          borderRadius: 3,
+          maxWidth: 400,
+          width: '100%',
+          backgroundColor: '#ffffff',
         }}
       >
-      <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", paddingBottom: 20 }}>
+        <Typography 
+          variant="h4" 
+          align="center" 
+          gutterBottom
+          sx={{ 
+            fontWeight: 'bold',
+            color: 'primary.main',
+            mb: 4
+          }}
+        >
           Decentralized Identity Management
-      </Typography>
-        {/* Login with Wallet */}
-        <WalletButton onConnect={handleWalletConnect}/>
-      </Box>
+        </Typography>
+
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Button
+            variant="contained"
+            size="large"
+            startIcon={<PersonIcon />}
+            onClick={handleUserLogin}
+            sx={{
+              py: 2,
+              backgroundColor: '#1976d2',
+              '&:hover': {
+                backgroundColor: '#1565c0',
+              },
+            }}
+          >
+            User Login
+          </Button>
+
+          <Button
+            variant="contained"
+            size="large"
+            startIcon={<BusinessIcon />}
+            onClick={handle3rdPartyLogin}
+            sx={{
+              py: 2,
+              backgroundColor: '#2e7d32',
+              '&:hover': {
+                backgroundColor: '#1b5e20',
+              },
+            }}
+          >
+            Third Party Login
+          </Button>
+        </Box>
+      </Paper>
     </Container>
   );
-}
+};
 
 export default Login;

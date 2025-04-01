@@ -69,7 +69,7 @@ function Login3rdparty() {
         component="form"
         onSubmit={handleLogin}
         sx={{
-          backgroundColor: "#00FFFF",
+          backgroundColor: "#ffffff",
           borderRadius: 4,
           minHeight: "50vh",
           width: "38vw",
@@ -80,9 +80,19 @@ function Login3rdparty() {
           gap: 3,
         }}
       >
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
-          Decentralized Identity Management
-        </Typography>
+        <Typography 
+  variant="h4" 
+  gutterBottom 
+  sx={{ 
+    fontWeight: "bold", 
+    color: "#2e7d32",
+    textAlign: "center",  // Add this
+    width: "100%",        // Add this
+    marginBottom: 3       // Add this for better spacing
+  }}
+>
+  Welcome
+</Typography>
 
         <TextField
           label="Username(Aadhaar number)"
@@ -112,7 +122,7 @@ function Login3rdparty() {
           fullWidth
           sx={{
             mt: 2,
-            backgroundColor: "#1976d2",
+            backgroundColor: "#2e7d32",
             color: "white",
             "&:hover": {
               backgroundColor: "#1565c0",
