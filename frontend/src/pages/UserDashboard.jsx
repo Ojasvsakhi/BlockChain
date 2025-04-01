@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {Popup} from "../components/3rParty";
 import {
   Container,
   Paper,
@@ -26,6 +27,7 @@ const UserDashboard = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openPopup, setOpenPopup] = useState(false);
   const mockRequests = [];
   useEffect(() => {
     fetchRequests();
@@ -45,8 +47,17 @@ const UserDashboard = () => {
     };
   }, []);
   useEffect(() => {
-    console.log("Requests state updated:", requests);
-  }, [requests]);
+    const walletAddress = localStorage.getItem("walletAddress");
+    const awaitingResponse = localStorage.getItem("awaitingResponse");
+    
+    if (walletAddress && awaitingResponse === "true") {
+      setOpenPopup(true);
+      localStorage.removeItem("awaitingResponse"); // Clear the flag
+    }
+  }, []);
+  const handlePopupClose = () => {
+    setOpenPopup(false);
+  };
   const handleProfile = () => {
     navigate("/UserProfile");
   };
@@ -209,6 +220,11 @@ const UserDashboard = () => {
       onClose={handleCloseDialog}
       onSubmit={handleSubmitDocument}
     />
+    <Popup 
+        open={openPopup}
+        onClose={handlePopupClose}
+        websiteName="Third Party Website"
+      />
     </Container>
   );
 };

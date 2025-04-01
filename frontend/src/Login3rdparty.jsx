@@ -18,20 +18,23 @@ function Login3rdparty() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [openPopup, setOpenPopup] = useState(false); // Add this state
+  const [isWaiting, setIsWaiting] = useState(false);
   const handleWalletConnect = (account) => {
     localStorage.setItem("isAuthenticated", true);
     localStorage.setItem("role", "user");
     localStorage.setItem("walletAddress", account);
-    setOpenPopup(true);
+    localStorage.setItem("awaitingResponse", "true");
+    setIsWaiting(true);
+    setOpenPopup(false);
   };
 
   const handleLogin = (e) => {
-    e.preventDefault();
-    setOpenPopup(true); // Open popup when login is clicked
+    e.preventDefault(); // Open popup when login is clicked
   };
 
   const handlePopupClose = () => {
     setOpenPopup(false);
+    setIsWaiting(false);
   };
   return (
     <Container
@@ -122,8 +125,19 @@ function Login3rdparty() {
             Continue with Google
           </Button>
 
-          {/* Login with Wallet */}
-          <WalletButton onConnect={handleWalletConnect}/>
+          <WalletButton 
+            onConnect={handleWalletConnect}
+            disabled={isWaiting}
+          />
+          
+          {isWaiting && (
+            <Typography 
+              color="info.main" 
+              sx={{ textAlign: 'center', mt: 1 }}
+            >
+              Awaiting response from verification...
+            </Typography>
+          )}
         </Stack>
       </Box>
       <Popup 
